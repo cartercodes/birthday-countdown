@@ -2,6 +2,10 @@
   "name": "react-bootstrap",
   "version": "1.0.0",
   "description": "Basic skeleton codebase for React with Bootstrap applications.",
+  "engines": {
+    "node": "8.11.2"
+  },
+  
   "scripts": {
     "postinstall": "copy env.example.js env.js",
     "start": "webpack-dev-server --config webpack/dev.config.js --watch",
