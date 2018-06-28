@@ -38,28 +38,40 @@ export default class App extends Component {
 
   handleGenerate = function() {
     this.setState({ active: true })
-     // set the date we're counting down to
-    var countDownDate = this.state.startDate.toDate().getTime();
 
-    //update count down every second
+    var bday = this.state.startDate.toDate();
+    var today = new Date();
+    var currentMonth = today.getMonth();
+    var birthMonth = bday.getMonth();
+
+    if(birthMonth > currentMonth) {
+      bday.setFullYear(today.getFullYear())
+    } else if(birthMonth < currentMonth) {
+      bday.setFullYear(today.getFullYear() + 1)
+    } else if(birthMonth == currentMonth) {
+      var currentDay = today.getDate();
+      var birthDay = bday.getDate();
+
+      if(birthDay > currentDay) {
+        bday.setFullYear(today.getFullYear())
+      }
+      if(birthDay <= currentDay) {
+        bday.setFullYear(today.getFullYear() + 1)
+      }
+    }
+
+    var countDownDate = bday.getTime();
+
     this.timer = setInterval (function() {
 
-      // get todays date and time
-
-      var now = new Date().getTime();
-
-      // find the distance between now and the countdown date - now
+      var now = today.getTime();
 
       var distance = countDownDate - now;
-
-      //Time the calculations for days, hours, minutes and seconds
 
       var days = Math.floor(distance / (1000 * 60 * 60 * 24));
       var hours = Math.floor((distance % (1000 * 60 * 24)) / (1000 * 60 * 60));
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60) / 1000));
-
-      // output the result in an element with id = "demo"
 
       const time = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
       const timeRemaining = {
@@ -71,15 +83,12 @@ export default class App extends Component {
     
       this.setState({ timeRemaining });
 
-      // if the countdown is over, write some text
-
       if (distance < 0) {
         clearInterval(this.timer);
-        // document.getElementById("demo").innerHTML = "EXPIRED";
-
+        // document.getElementById("demo").innerHTML = "EXPIRED"
       }
     }.bind(this), 1000);
-  }.bind(this)
+  }.bind(this);
 
   renderItems = function() {
     if(this.state.active) {
